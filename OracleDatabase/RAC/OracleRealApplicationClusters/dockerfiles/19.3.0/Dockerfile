@@ -190,11 +190,11 @@ RUN rm -f "${INSTALL_DIR}"/install/* && \
 #############################################
 FROM rac-image-slim-true AS builder-slim
 ARG SLIMMING
- 
+
 COPY $FIXUP_PREQ_FILE $GRID_SW_INSTALL_RSP $INSTALL_GRID_PATCH $GRID_HOME_CLEANUP $ORACLE_HOME_CLEANUP $DB_INSTALL_RSP $INSTALL_DB_BINARIES_FILE $ENABLE_RAC_FILE $INSTALL_GRID_BINARIES_FILE $INSTALL_FILE_1* $INSTALL_FILE_2* $INSTALL_SCRIPTS/
- 
+
 RUN chmod 755 "${INSTALL_SCRIPTS}"/*.sh
- 
+
 ## Install software if SLIMMING is false
 # hadolint ignore=SC2086
 RUN if [ "${SLIMMING}x" != 'truex' ]; then \
@@ -211,7 +211,7 @@ RUN if [ "${SLIMMING}x" != 'truex' ]; then \
       su  $DB_USER -c "$INSTALL_SCRIPTS/$ORACLE_HOME_CLEANUP" && \
       :; \
     fi
- 
+
 RUN rm -f "$INSTALL_DIR"/install/* && \
     sync
 #############################################
@@ -257,17 +257,17 @@ WORKDIR $WORKDIR
 
 # Define default command to start Oracle Grid and RAC Database setup.
 # hadolint ignore=DL3006,DL3025
-ENTRYPOINT "/usr/bin/$INITSH" 
+ENTRYPOINT "/usr/bin/$INITSH"
 ##########################################
 FROM rac-image-slim-true AS final-slim
- 
+
 # Setup Scripts
 COPY $FIXUP_PREQ_FILE $INSTALL_SCRIPTS/
- 
+
 COPY $RUN_FILE $INITSH $ADDNODE $ADDNODE_RSP $SETUPSSH $FUNCTIONS $CONFIGGRID $GRID_INSTALL_RSP $DBCA_RSP $PWD_FILE $CHECK_DB_FILE $USER_SCRIPTS_FILE $STOP_FILE $CHECK_DB_FILE $REMOTE_LISTENER_FILE $SETUPGRIDENV $DELNODE $RESET_FAILED_UNITS $RESET_OS_PASSWORD $MULTI_NODE_INSTALL $SET_CRONTAB $SCRIPT_DIR/
- 
+
 COPY --from=builder /u01 /u01
- 
+
 # hadolint ignore=SC2086
 RUN if [ "${SLIMMING}x" != 'truex' ]; then \
        $INVENTORY/orainstRoot.sh && \
@@ -289,11 +289,11 @@ RUN if [ "${SLIMMING}x" != 'truex' ]; then \
     rm -f /etc/sysctl.d/99-sysctl.conf && \
     rm -f $INSTALL_DIR/install/* && \
     sync
- 
+
 USER ${USER}
 VOLUME ["/common_scripts"]
 WORKDIR $WORKDIR
- 
+
 # Define default command to start Oracle Grid and RAC Database setup.
 # hadolint ignore=DL3025
 ENTRYPOINT /usr/bin/$INITSH

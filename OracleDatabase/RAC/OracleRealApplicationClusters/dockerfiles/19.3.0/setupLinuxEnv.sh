@@ -6,18 +6,21 @@
 # Since: January, 2018
 # Author: paramdeep.saini@oracle.com
 # Description: Sets up the unix environment for DB installation.
-# 
+#
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
+#
 
 # Setup filesystem and oracle user
 # Adjust file permissions, go to /opt/oracle as user 'oracle' to proceed with Oracle installation
 # ------------------------------------------------------------
 mkdir /asmdisks && \
 mkdir /responsefiles  && \
-yum -y install systemd oracle-database-preinstall-19c net-tools which zip unzip tar crontabs openssl expect e2fsprogs openssh-server vim-minimal passwd which sudo hostname policycoreutils-python-utils && \
-yum clean all 
+yum -y install systemd oracle-database-preinstall-19c \
+    net-tools which zip unzip tar crontabs openssl expect \
+    e2fsprogs openssh-server vim-minimal passwd which sudo \
+    hostname policycoreutils-python-utils chrony && \
+yum clean all
 
 ## Custom install to install xorg, perl, ntpd,crontab and hostname inside the container
 
-#yum -y install systemd oracle-database-preinstall-19c net-tools ntpd crontab perl gcc hostname  which zip unzip tar openssl expect e2fsprogs openssh-server openssh-client vim-minimal passwd which sudo xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps 
+#yum -y install systemd oracle-database-preinstall-19c net-tools ntpd crontab perl gcc hostname  which zip unzip tar openssl expect e2fsprogs openssh-server openssh-client vim-minimal passwd which sudo xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps

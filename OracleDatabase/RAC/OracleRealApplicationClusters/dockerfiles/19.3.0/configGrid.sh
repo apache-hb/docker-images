@@ -18,7 +18,7 @@
 ####################### Variables and Constants #################
 
 declare -r TRUE=0
- 
+
 declare -x GRID_USER='grid'          ## Default gris user is grid.
 declare -x DB_USER='oracle'      ## default oracle user is oracle.
 declare -x logdir="/tmp"
@@ -28,7 +28,7 @@ declare -r INSTALL_TYPE='CRS_CONFIG' ## INSTALL TYPE default set to CRS_CONFIG
 declare -r IPMI_FLAG='false'         ## IPMI Flag by default to set false
 declare -r ASM_STORAGE_OPTION='ASM'  ## ASM_STORAGE_OPTION set to ASM
 declare -r GIMR_ON_NAS='false'       ## GIMR on NAS set to false
-declare -x GIMR_DB_FLAG='false'      #  Disabled GIMR DB FLAG 
+declare -x GIMR_DB_FLAG='false'      #  Disabled GIMR DB FLAG
 declare -x ASM_DISKGROUP_DISKS       ## Computed during program Execution
 declare -x ASM_DISKGROUP_FG_DISKS    ## Computing During program execution.
 declare -x GIMR_DISKGROUP_DISKS      ## Computed During Program Execution
@@ -43,8 +43,8 @@ declare -x NETWORK_STRING            ## Do not pass as env variable. Computed du
 declare -x GIMR_DG_FLAG              ## Default set to FALSE. If under DSC, set to true.
 declare -x GIMR_DG_NAME              ## Default set to MGMT.
 declare -x GIMR_DG_REDUNDANCY        ## Used if you will use DSC. Default set to EXTERNAL.
-declare -x DOMAIN                    ## Domain name will be computed based on hostname -d, otherwise pass it as env variable. 
-declare -x PUBLIC_IP                 ## Computed based on Node name.  
+declare -x DOMAIN                    ## Domain name will be computed based on hostname -d, otherwise pass it as env variable.
+declare -x PUBLIC_IP                 ## Computed based on Node name.
 declare -x PUBLIC_HOSTNAME           ## PUBLIC HOSTNAME set based on hostname
 declare -x DHCP_CONF='false'         ## Pass env variable where value set to true for DHCP based installation.
 declare -x NODE_VIP                  ## Pass it as env variable.
@@ -53,11 +53,11 @@ declare -x SCAN_NAME                 ## Pass it as env variable.
 declare -x SCAN_PORT                 ## Default SCAN_PORT set to 1521. Pass some other value if need some other PORT.
 declare -x SCAN_IP                   ## Pass as env variable if you do not have DNS server. Otherwise, do not pass this variable.
 declare -x SINGLENIC='false'         ## Default value is false as we should use 2 nics if possible for better performance.
-declare -x PRIV_IP                   ## Pass PRIV_IP is not using SINGLE NIC   
+declare -x PRIV_IP                   ## Pass PRIV_IP is not using SINGLE NIC
 declare -x CONFIGURE_GNS             ## Default value set to false. However, under DSC checks, it is reverted to true.
 declare -x GNS_OPTIONS               ## By Default value will be CREATE_NEW_GNS
 declare -x GNSVIP_HOSTNAME            ## If you are using DSC or DHCP for grid.
-declare -x GNS_SUBDOMAIN             ## If you are using DHCP. 
+declare -x GNS_SUBDOMAIN             ## If you are using DHCP.
 declare -x COMMON_SCRIPTS            ## COMMON SCRIPT Locations. Pass this env variable if you have custom responsefile for grid and other scripts for DB.
 declare -x PASSWORD_FILE='pwdfile'
 declare -x PRIV_HOSTNAME             ## if SINGLENIC=true then PRIV and PUB hostname will be same. Otherise pass it as env variable.
@@ -75,26 +75,26 @@ declare -x STORAGE_OPTIONS_FOR_MEMBERDB ##Pass it as env variable if you want to
 declare -x DB_ASM_DISKGROUP='DATA'   ## Pass it env variable when using Member DB cluster. Default value is DATA. Another vakue can be MGMT.
 declare -x MEMBERDB_FILE             ## Mandatory Parameter for MEMBER DB CLUSTER. Pass the Manifest file name. Copy it under COMMON_SCRIPTS.
 declare -x ORACLE_CHARACTERSET       ## If not passed as env variable then default value is AL32UTF8.
-declare -x ORACLE_PWD                ## If not passed as env variable then default value is set to PASSWORD  
+declare -x ORACLE_PWD                ## If not passed as env variable then default value is set to PASSWORD
 declare -x ORACLE_PDB                ## If not passed then oraclepdb is default pdb name
 declare -x ORACLE_SID                ## If not passed then default db name is oraclecdb.
 declare -x CONTAINER_DB_FLAG='true'  ## default database will be created as container. Set it to false to create Non-CDB
-declare -r OSOPER	             ## OSOPER group 		
+declare -r OSOPER	             ## OSOPER group
 declare -x IPMI_USERNAME             ## Specify IPMI Username
-declare -x IPMI_PASSWORD             ## IPMI_PASSWORD 
+declare -x IPMI_PASSWORD             ## IPMI_PASSWORD
 declare -x ASM_REDUNDANCY='EXTERNAL' ## ASM REDUNDANCY default to EXTERNAL
 declare -x SCAN_TYPE='LOCAL_SCAN'    ## SCAN TYPE set to LOCAL
 declare -x SHARED_SCAN               ## SHARED_SCAN. define file for SHARED SCAN
 declare -x EXTENDED_CLUSTER=false    ## EXTENDED CLUSTER DEFAULT set to false
 declare -x SHARED_GNS_FILE           ## Specify SHARED GNS
-declare -x EXTENDED_CLUSTER_SITES    ## Specify Extended Cluster Sites   
+declare -x EXTENDED_CLUSTER_SITES    ## Specify Extended Cluster Sites
 declare -x ASM_DG_FAILURE_GROUP      ## ASM DG Failure groups
 declare -x ASM_ON_NAS                ## Specify ASM on NAS
 declare -x ASM_ON_NAS_LOCATION       ## Specify ASM on NAS Location
 declare -x FAILURE_GROUP_SITE_NAME   ## Specify Failure Group Site Name
 declare -x QUORUM_FAILURE_GROUP      ## Specify QUORUM Failure Group name
 declare -x GIMR_DG_FAILURE_GROUP     ## Specufy DG Failure name
-declare -x CONFIGURE_AFD_FLAG='false'  ##Specify Configure AFD Flag  
+declare -x CONFIGURE_AFD_FLAG='false'  ##Specify Configure AFD Flag
 declare -x CONFIGURE_RHPS_FLAG='false' ## Speicfy Configure RHPS Flag
 declare -x EXECUTE_ROOT_SCRIPT_FLAG='fasle'   ## Specify ROOT Script Flag
 declare -x EXECUTE_ROOT_SCRIPT_METHOD='ROOT'  ## Specify Execute Root Script methid
@@ -536,7 +536,7 @@ local CLUSTER_NODES
 if [ -z "$CRS_NODES" ]; then
   CLUSTER_NODES=$PUBLIC_HOSTNAME
 else
-  CLUSTER_NODES=$( echo "$CRS_NODES" | tr ',' ' ' ) 
+  CLUSTER_NODES=$( echo "$CRS_NODES" | tr ',' ' ' )
 fi
 
 print_message "SSh will be setup among $CLUSTER_NODES nodes"
@@ -745,7 +745,7 @@ if [ $arr_device -ne 0 ]; then
         unset cmd
         print_message "Populate Rac Env Vars on Remote Hosts"
         # shellcheck disable=SC2016
-        cmd='su - $GRID_USER -c "ssh $node sudo echo \"export GIMR_DEVICE_LIST=${GIMR_DEVICE_LIST}\" >> /etc/rac_env_vars"' 
+        cmd='su - $GRID_USER -c "ssh $node sudo echo \"export GIMR_DEVICE_LIST=${GIMR_DEVICE_LIST}\" >> /etc/rac_env_vars"'
         print_message "Command : $cmd execute on $node"
         eval $cmd
         unset cmd
@@ -944,7 +944,7 @@ cat $logdir/cluvfy_check.txt > "$STD_OUT_FILE"
 if [[ ${IGNORE_CVU_CHECKS} == 'true' ]]; then
 print_message "CVU Checks are ignored as IGNORE_CVU_CHECKS set to true. It is recommended to set IGNORE_CVU_CHECKS to false and meet all the cvu checks requirement. RAC installation might fail, if there are failed cvu checks."
 else
-if [[ $FAILED_CMDS =~ .*FAILED*. ]] 
+if [[ $FAILED_CMDS =~ .*FAILED*. ]]
 then
 print_message "cluvfy failed for following  \n $FAILED_CMDS"
 error_exit "Pre Checks failed for Grid installation, please check $logdir/cluvfy_check.txt"
@@ -977,7 +977,7 @@ else
   IFS=', ' read -r -a CLUSTER_NODES <<< "$CRS_NODES"
 fi
 
-print_message "Nodes in the cluster ${CLUSTER_NODES[*]}" 
+print_message "Nodes in the cluster ${CLUSTER_NODES[*]}"
 for node in "${CLUSTER_NODES[@]}"; do
 print_message "Running root.sh on $node"
 # shellcheck disable=SC2016

@@ -41,7 +41,7 @@ trap '{ exit 15; }' TERM
 ###########################trap code ends here##########################
 
 
-######################################## Pre-Grid-Deployment Steps Begin here  #################################### 
+######################################## Pre-Grid-Deployment Steps Begin here  ####################################
 pre_grid_deploy_steps ()
 {
 local systemd_svc
@@ -50,7 +50,7 @@ local systemctl_state
 # Setting default gateway
 if [ -n "${DEFAULT_GATEWAY}" ];then
   ip route del default
-  ip route add default via $DEFAULT_GATEWAY 
+  ip route add default via $DEFAULT_GATEWAY
 fi
 
 # Adding blank ntp.conf
@@ -96,7 +96,7 @@ chmod 6755 /usr/bin/ping
 
 ##################################### Pre-Grid-Deployment steps end here ############################
 ######################################### ASM Disk Functions ###################################
- 
+
 build_block_device_list ()
 {
 local stat
@@ -180,7 +180,7 @@ local count=1
 		else
                    print_message "Adding nameserver ${dns} in ${RESOLV_CONF_FILE}."
                    echo  "nameserver ${dns}" >> ${RESOLV_CONF_FILE}
-		fi 
+		fi
                done
         fi
 else
@@ -235,7 +235,7 @@ startNTPD()
 {
 if [ "${NTPD_START}" != 'false' ]; then
 systemctl start ntpd
-fi 
+fi
 }
 ####################################### ETC Host Function #############################################################
 checkHostName ()
@@ -302,7 +302,7 @@ else
 elif [ "${HOSTNAME}" == "${SCAN_NAME}" ]; then
         unset HOST_LINE
 	if [ -n "$SCAN_IP" ];then
-	  HOST_LINE="\n${SCAN_IP}\t${SCAN_NAME}.${DOMAIN}\t${SCAN_NAME}" 
+	  HOST_LINE="\n${SCAN_IP}\t${SCAN_NAME}.${DOMAIN}\t${SCAN_NAME}"
           print_message "Adding $HOST_LINE to $ETCHOSTS"
           echo -e $HOST_LINE >> $ETCHOSTS
 	fi

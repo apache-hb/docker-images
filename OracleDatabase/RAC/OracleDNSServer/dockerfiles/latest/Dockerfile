@@ -4,13 +4,13 @@
 #
 # ORACLE DOCKERFILES PROJECT
 # --------------------------
-# This is the Dockerfile for Oracle Database 19c RAC Storage Server. This file create DNS Server for RAC. 
-# 
+# This is the Dockerfile for Oracle Database 19c RAC Storage Server. This file create DNS Server for RAC.
+#
 # HOW TO BUILD THIS IMAGE
 # -----------------------
 # Put all downloaded files in the same directory as this Dockerfile
-# Run: 
-#      $ docker build -t oracle/rac-dns-server:19.3.0. 
+# Run:
+#      $ docker build -t oracle/rac-dns-server:19.3.0.
 #
 # Pull base image
 # ---------------
@@ -37,10 +37,10 @@ ENV SETUP_LINUX_FILE="setupLinuxEnv.sh" \
     NAMED_EMPTY_FILE="named.empty" \
     FUNCTIONS="functions.sh" \
     RUN_FILE="runOracle.sh" \
-    SUDO_SETUP_FILE="setupSudo.sh" \ 
+    SUDO_SETUP_FILE="setupSudo.sh" \
     BIN="/usr/sbin" \
     ORADATA="/oradata" \
-    container="true" 
+    container="true"
 # Use second ENV so that variable get substituted
 ENV  INSTALL_SCRIPTS=$INSTALL_DIR/install  \
      SCRIPT_DIR=$INSTALL_DIR/startup
@@ -68,6 +68,7 @@ RUN  chmod 755 $INSTALL_DIR/install/*.sh && \
      chmod 666 $SCRIPT_DIR/$NAMED_SAMPLE_FILE && \
      echo "nohup $SCRIPT_DIR/runOracle.sh &" >> /etc/rc.local && \
      chmod +x /etc/rc.d/rc.local  && \
+     chmod 777 /tmp && \
      useradd orcladmin && \
      sync
 

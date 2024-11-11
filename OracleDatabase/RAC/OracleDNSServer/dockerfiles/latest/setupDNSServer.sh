@@ -2,13 +2,13 @@
 # LICENSE UPL 1.0
 #
 # Copyright (c) 2018-2024 Oracle and/or its affiliates. All rights reserved.
-# 
+#
 # Since: January, 2018
 # Author: paramdeep.saini@oracle.com, sanjay.singh@oracle.com
 # Description: Runs  NFS server inside the container
-# 
+#
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-# 
+#
 # shellcheck disable=SC1091
 source /tmp/envfile
 # shellcheck disable=SC1090
@@ -35,28 +35,30 @@ export FILE_COUNT=0
 
 setEnvVariables()
 {
+   privateInterface=$(ip route | grep $RAC_PRIVATE_IP | awk '{print $3}')
+   publicInterface=$(ip route | grep $RAC_PUBLIC_IP | awk '{print $3}')
     prefixdSet=0
     prefixpSet=0
     HOSTNAME=$(hostname | cut -d"." -f1)
     print_message "HOSTNAME is set to $HOSTNAME"
-    RAC_PUBLIC_SUBNET=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1-3)
+    RAC_PUBLIC_SUBNET=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1-3)
     print_message "RAC_PUBLIC_SUBNET is set to $RAC_PUBLIC_SUBNET"
 
 if [ -n "${PRIVATE_DOMAIN_NAME}" ]; then
-    RAC_PRIVATE_SUBNET=$(/sbin/ifconfig eth1 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1-3)
+    RAC_PRIVATE_SUBNET=$(/sbin/ifconfig $privateInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1-3)
     export RAC_PRIVATE_SUBNET
     print_message "RAC_PRIVATE_SUBNET is set to $RAC_PRIVATE_SUBNET"
 fi
-    HOSTNAME_IP_LAST_DIGITS=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f4)
+    HOSTNAME_IP_LAST_DIGITS=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f4)
     print_message "HOSTNAME_IP_LAST_DIGITS is set to $HOSTNAME_IP_LAST_DIGITS"
-    RAC_DNS_SERVER_IP=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/')
+    RAC_DNS_SERVER_IP=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/')
     print_message "RAC_DNS_SERVER_IP is set to $RAC_DNS_SERVER_IP"
-    IP_DIGIT_3=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f3)
-    IP_DIGIT_2=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f2)
-    IP_DIGIT_1=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1)
+    IP_DIGIT_3=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f3)
+    IP_DIGIT_2=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f2)
+    IP_DIGIT_1=$(/sbin/ifconfig $publicInterface | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/' | cut -d"." -f1)
     RAC_PUBLIC_REVERSE_IP="${IP_DIGIT_3}.${IP_DIGIT_2}.${IP_DIGIT_1}"
     print_message "RAC_PUBLIC_REVERSE_IP set to $RAC_PUBLIC_REVERSE_IP"
- 
+
     PRIV_IP_DIGIT_3=$(echo "$RAC_PRIVATE_SUBNET" | cut -d"." -f3)
     PRIV_IP_DIGIT_2=$(echo "$RAC_PRIVATE_SUBNET" | cut -d"." -f2)
     PRIV_IP_DIGIT_1=$(echo "$RAC_PRIVATE_SUBNET" | cut -d"." -f1)
