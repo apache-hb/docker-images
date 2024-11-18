@@ -1239,19 +1239,19 @@ su - $GRID_USER -c "$SCRIPT_DIR/$USER_SCRIPTS_FILE $GRID_SCRIPT_ROOT GRID"
 
 ####### DB Setup ##########
 if [ "${CLUSTER_TYPE}" == 'STANDALONE' ] || [ "${CLUSTER_TYPE}" == 'MEMBERDB' ]; then
-if [ "${RUN_DBCA}" == "true" ]; then
-print_message "Generating DB Responsefile Running DB creation"
-dbca_response_file
-print_message "Running DB creation"
-createRACDB
-print_message "Checking DB status"
-su - $DB_USER -c "$SCRIPT_DIR/$CHECK_DB_FILE $ORACLE_SID"
-checkDBStatus
-print_message "Running User Script $DB_USER user"
-su - $DB_USER -c "$SCRIPT_DIR/$USER_SCRIPTS_FILE $DB_SCRIPT_ROOT DB"
-print_message "Setting Remote Listener"
-setremotelistener
-fi
+  if [ "${RUN_DBCA}" == "true" ]; then
+    print_message "Generating DB Responsefile Running DB creation"
+    dbca_response_file
+    print_message "Running DB creation"
+    createRACDB
+    print_message "Checking DB status"
+    su - $DB_USER -c "$SCRIPT_DIR/$CHECK_DB_FILE $ORACLE_SID"
+    checkDBStatus
+    print_message "Running User Script $DB_USER user"
+    su - $DB_USER -c "$SCRIPT_DIR/$USER_SCRIPTS_FILE $DB_SCRIPT_ROOT DB"
+    print_message "Setting Remote Listener"
+    setremotelistener
+  fi
 fi
 
 echo $TRUE
